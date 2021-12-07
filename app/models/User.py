@@ -1,3 +1,4 @@
+from flask.json import jsonify
 from app.db import Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import validates
@@ -19,3 +20,10 @@ class User(Base):
     def validate_password(self, key, password):
         assert len(password) > 4
         return bcrypt.hashpw(password.encode('utf-8'), salt)
+
+    def verify_password(self,password):
+        return bcrypt.checkpw(
+            password.encode('utf-8'),
+            self.password.encode('utf-8')
+
+        )
